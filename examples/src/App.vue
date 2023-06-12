@@ -8,13 +8,16 @@
                     width="240px"
                     immediate
                     multiple
+                    display-tag
+                    auto-height
+                    searchable
                     enable-scroll-load
                     :remote-method="getOptions">
                     <auto-page-option
                         v-for="opt in options"
                         :key="opt.id"
                         :id="opt.id"
-                        :name="opt.name" />
+                        :name="`${opt.name}【${opt.en}】`" />
                 </auto-page-select>
             </bk-form-item>
         </bk-form>

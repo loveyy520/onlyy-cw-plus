@@ -4,6 +4,7 @@
         v-bind="$attrs"
         :loading="loading"
         :style="{width: computedWidth}"
+        :remote-method="setKeyword"
         @scroll-end="makeRequest">
         <slot />
     </bk-select>
@@ -51,8 +52,9 @@ const {
     keyword,
     loading,
     makeRequest,
+    setKeyword,
     reset
-} = usePaginationRequest(props.remoteMethod, props.immediate, console.log)
+} = usePaginationRequest(props.remoteMethod, props.immediate)
 
 defineExpose({
     options,
