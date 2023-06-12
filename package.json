@@ -1,0 +1,57 @@
+{
+    "name": "onlyy-cw-plus",
+    "version": "1.0.0",
+    "description": "<!--  * @Author: loveyy520 201357337@qq.com  * @Date: 2023-06-02 19:36:04  * @LastEditors: loveyy520 201357337@qq.com  * @LastEditTime: 2023-06-02 22:19:02  * @FilePath: \\onlyy-cw-plus\\README.md  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE --> # onlyy-cw-plus 以嘉为前端组件为基础进行二次封装的个别组件包",
+    "main": ".eslintrc.js",
+    "directories": {
+        "example": "examples",
+        "test": "test"
+    },
+    "scripts": {
+        "dev": "vite --mode development",
+        "start": "npm run dev",
+        "eslint": "npx eslint /**/*.vue --fix",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "@canway/cw-magic-vue": "^3.7.10-beta-01",
+        "vue": "^2.7.14"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.20.7",
+        "@babel/core": "^7.20.12",
+        "@babel/eslint-parser": "^7.19.1",
+        "@babel/helper-module-imports": "^7.12.13",
+        "@babel/plugin-transform-runtime": "^7.19.6",
+        "@babel/preset-env": "^7.20.2",
+        "@types/stylelint": "^13.13.3",
+        "@vitejs/plugin-vue2": "^2.2.0",
+        "babel-eslint": "^10.1.0",
+        "core-js": "3.27.2",
+        "eslint": "^7.32.0",
+        "eslint-config-standard": "^10.2.1",
+        "eslint-friendly-formatter": "^3.0.0",
+        "eslint-loader": "^4.0.2",
+        "eslint-plugin-import": "^2.7.0",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-promise": "^6.1.1",
+        "eslint-plugin-standard": "^3.0.1",
+        "eslint-plugin-vue": "^9.8.0",
+        "path-browserify": "^1.0.1",
+        "sass": "^1.58.0",
+        "terser": "^5.16.5",
+        "vite": "^4.0.0",
+        "vite-plugin-eslint": "^1.8.1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/loveyy520/onlyy-cw-plus.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/loveyy520/onlyy-cw-plus/issues"
+    },
+    "homepage": "https://github.com/loveyy520/onlyy-cw-plus#readme"
+}

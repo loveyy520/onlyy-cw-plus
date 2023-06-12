@@ -7,11 +7,12 @@
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import { reactive, ref, watch } from 'vue'
-import { getDeepProperty } from '../utils.js'
+import { getDeepProperty } from '~/utils'
 
 /**
  * 请求自动分页
  * @param { (...args) => Promise } request 请求方法
+ * @param { boolean } immediate 是否立即请求选项数据，默认false
  * @param { (msg: string) => void } warning 异常提示方法
  * @param { object } extraParams 除了分页和搜索关键字以外的其他参数, 应当是一个Ref或ComputedRef, 或者返回一个对象的函数以兼容选项式API
  * @param { boolean } replace 旧数据的处理方式: true - 替换; false - 并入。默认false
@@ -24,11 +25,12 @@ import { getDeepProperty } from '../utils.js'
  */
 function usePaginationRequest(
     request,
+    immediate = false,
     warning = () => {},
     extraParams = {},
     replace = false,
     keywordKey = 'keyword',
-    pagesize = 20,
+    pagesize = 10,
     dataKey = 'data.items',
     countKey = 'data.count',
     resultKey = 'result',
@@ -37,13 +39,7 @@ function usePaginationRequest(
     const data = ref([]) // 展示的数据
     const keyword = ref('') // 搜索关键字
     const count = ref(1) // 服务端数据总量
-
-    // 缓存搜索关键字为空时的数据
-    // const cache = reactive({
-    //     data: [],
-    //     count: 1,
-    //     page: 1
-    // })
+    const loading = ref(false)
 
     // 分页
     const pagination = reactive({
@@ -52,11 +48,9 @@ function usePaginationRequest(
     })
 
     watch(keyword, (val) => {
-        // // 清空关键字时且有缓存数据时，不发起请求，恢复缓存数据
-        // 其它情况重置页码/数据/数量，再重新请求
-        // !keyword && !cache.data.length ? recoverData() : resetPage()
         resetPage()
-    }, { immediate: true })
+        makeRequest()
+    }, { immediate })
 
     /**
      * 获取分页数据
@@ -64,12 +58,13 @@ function usePaginationRequest(
      */
     async function makeRequest() {
         try {
-            if (data.value.length >= count) return
+            if (data.value.length >= count.value) return
             const params = {
                 ...pagination,
                 ...(typeof extraParams === 'function' ? extraParams() : extraParams),
                 [keywordKey]: keyword.value
             }
+            loading.value = true
             const res = await request(params)
             // 获取数据失败提示
             if (resultKey && !getDeepProperty(res, resultKey))  return warning(getDeepProperty(res, messageKey))
@@ -81,36 +76,28 @@ function usePaginationRequest(
             data.value = replace ? currentData : [...data.value, ...currentData]
 
             // 处理分页
-            pagesize.page++
-
-            // // 缓存搜索关键字为空时的数据
-            // cacheData()
+            pagination.page++
+            console.log('opts:', data.value);
         } catch(e) {
             warning(e.message || e)
+        } finally {
+            loading.value = false
         }
     }
-
-    // function cacheData(mode = 'cache') {
-    //     cache.data = mode === 'cache' ? data.value : []
-    //     cache.count = mode === 'cache' ? count.value : 1
-    //     cache.page = mode === 'cache' ? pagination.page: 1
-    // }
-
-    // function recoverData() {
-    //     data.value = cache.data
-    //     count.value = cache.count
-    //     pagination.page = cache.page
-    // }
-
-    // function clearCache() {
-    //     cacheData('clear')
-    // }
     
     function resetPage() {
         pagination.page = 1
         count.value = 1
         data.value = []
-        makeRequest()
+    }
+
+    function resetKeyword() {
+        keyword.value = ''
+    }
+
+    function reset() {
+        resetPage()
+        resetKeyword()
     }
 
     return {
@@ -118,10 +105,10 @@ function usePaginationRequest(
         count,
         keyword,
         pagination,
+        loading,
         makeRequest,
         resetPage,
-        // cache,
-        // clearCache
+        reset
     }
 }
 
