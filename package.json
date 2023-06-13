@@ -1,8 +1,8 @@
 {
     "name": "onlyy-cw-plus",
     "version": "1.0.0",
-    "description": "<!--  * @Author: loveyy520 201357337@qq.com  * @Date: 2023-06-02 19:36:04  * @LastEditors: loveyy520 201357337@qq.com  * @LastEditTime: 2023-06-02 22:19:02  * @FilePath: \\onlyy-cw-plus\\README.md  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE --> # onlyy-cw-plus 以嘉为前端组件为基础进行二次封装的个别组件包",
-    "main": ".eslintrc.js",
+    "description": "onlyy-cw-plus 以嘉为前端组件为基础进行二次封装的个别组件包",
+    "main": "src/index.js",
     "directories": {
         "example": "examples",
         "test": "test"
@@ -10,8 +10,7 @@
     "scripts": {
         "dev": "vite --mode development",
         "start": "npm run dev",
-        "eslint": "npx eslint /**/*.vue --fix",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "eslint": "npx eslint /**/*.vue --fix"
     },
     "dependencies": {
         "@canway/cw-magic-vue": "^3.7.10-beta-01",
@@ -48,7 +47,7 @@
         "url": "git+https://github.com/loveyy520/onlyy-cw-plus.git"
     },
     "keywords": [],
-    "author": "",
+    "author": "ChrisLey",
     "license": "ISC",
     "bugs": {
         "url": "https://github.com/loveyy520/onlyy-cw-plus/issues"

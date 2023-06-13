@@ -1,0 +1,11 @@
+examples/
+node_modules/
+test/
+
+.eslintrc.js
+.gitignore
+.npmrc
+
+index.html
+vite.config.js
+pnpm-lock.yaml
