@@ -1,6 +1,6 @@
 <template>
     <bk-select
-        v-model="value"
+        v-model="modelValue"
         v-bind="$attrs"
         :loading="loading"
         :style="{width: computedWidth}"
@@ -37,7 +37,11 @@ import { usePaginationRequest } from '~/composables'
 
 const props = defineProps({
     modelValue: {
-        type: [String, Number, Object],
+        type: [String, Number, Array],
+        default: ''
+    },
+    value: {
+        type: [String, Number, Array],
         default: ''
     },
     width: {
@@ -72,17 +76,20 @@ const props = defineProps({
         type: Array,
         default: () => []
     },
-    uniqueSymbol: {
+    uniqueFiled: {
         type: String,
         default: 'id'
     }
 })
 
-const emit = defineEmits(['update:modelValue'])
-
-const value = computed({
-    get: () => props.modelValue,
-    set: (val) => emit('update:modelValue', val)
+const emit = defineEmits(['update:value', 'change'])
+const modelValue = computed({
+    get() {
+        return props.value
+    },
+    set(val) {
+        emit('update:value', val)
+    }
 })
 
 const computedWidth = computed(() => typeof props.width === 'number' ? `${props.width}px` : props.width)
@@ -100,7 +107,7 @@ const {
     props.keywordKey,
     props.extraParams,
     props.defaultValue,
-    props.uniqueSymbol,
+    props.uniqueFiled,
     props.warning,
     scrollToTop
 )

@@ -16,7 +16,7 @@ import { getDeepProperty } from '~/utils'
  * @param { string } keywordKey 搜索关键字在请求参数中的名称，默认为keyword
  * @param { object } extraParams 除了分页和搜索关键字以外的其他参数, 应当是一个Ref或ComputedRef, 或者返回一个对象的函数以兼容选项式API
  * @param { array } defaultValue 适用于多选的编辑场景下的回显数据，多选时为对象数组
- * @param { string } uniqueSymbol 适用于多选的编辑场景下，回显数据去重的字段，默认为id
+ * @param { string } uniqueFiled 适用于多选的编辑场景下，回显数据去重的字段，默认为id
  * @param { (msg: string) => void } warning 异常提示方法
  * @param { (...args) => void } requestCallback 请求成功且在options处理完成后的回调
  * @param { boolean } replace 旧数据的处理方式: true - 替换; false - 并入。默认false
@@ -32,7 +32,7 @@ function usePaginationRequest(
     keywordKey = 'keyword',
     extraParams = {},
     defaultValue = [],
-    uniqueSymbol = 'id',
+    uniqueFiled = 'id',
     warning = () => {},
     requestCallback,
     replace = false,
@@ -55,10 +55,13 @@ function usePaginationRequest(
     })
 
     let inited = false
+    let keywordChanged = false // 是否改变过关键字
 
     watch(keyword, async (val) => {
+        // if (!val) inited = false
         resetPage()
-        makeRequest(!inited)
+        await makeRequest(!inited)
+        if (val) keywordChanged = true
     }, { immediate })
 
     /**
@@ -83,8 +86,11 @@ function usePaginationRequest(
 
             // 获取数据成功
             // 处理数据
-            const currentData = getDeepProperty(res, dataKey)
-                .filter(item => preData.value.every(preItem => preItem[uniqueSymbol] !== item[uniqueSymbol]))
+            let currentData = getDeepProperty(res, dataKey)
+            if (!keyword.value && merge && !keywordChanged) {
+                currentData = currentData
+                    .filter(item => preData.value.every(preItem => preItem[uniqueFiled] !== item[uniqueFiled]))
+            }
 
             count.value = getDeepProperty(res, countKey)
             data.value = replace || !merge ? currentData : [...data.value, ...currentData]

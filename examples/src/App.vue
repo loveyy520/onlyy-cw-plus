@@ -13,8 +13,10 @@
                     searchable
                     clearable
                     enable-scroll-load
-                    :defaultValue="[{ id: 9, name: '测试9', en: 'test9' }]"
-                    :remote-method="getOptions">
+                    :value.sync="model.ids"
+                    :defaultValue="model.objs"
+                    :remote-method="getOptions"
+                    @change="handleChange">
                     <auto-page-option
                         v-for="opt in options"
                         :key="opt.id"
@@ -27,13 +29,22 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { getOptions } from '@/api'
 
 const selectRef = ref(null)
 
 const options = computed(() => selectRef.value?.options ??
     [])
+
+const model = reactive({
+    ids: [25],
+    objs: [{ id: 25, name: '测试25', en: 'test25' }]
+})
+
+function handleChange(val, oldVal) {
+    console.log('ids:', model.ids, 'val:', val);
+}
 </script>
 
 <style lang="scss" scoped>
