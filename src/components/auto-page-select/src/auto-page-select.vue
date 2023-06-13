@@ -67,6 +67,14 @@ const props = defineProps({
     warning: {
         type: Function,
         default: () => {}
+    },
+    defaultValue: {
+        type: Array,
+        default: () => []
+    },
+    uniqueSymbol: {
+        type: String,
+        default: 'id'
     }
 })
 
@@ -91,8 +99,11 @@ const {
     props.immediate,
     props.keywordKey,
     props.extraParams,
+    props.defaultValue,
+    props.uniqueSymbol,
     props.warning,
-    scrollToTop)
+    scrollToTop
+)
 
 function scrollToTop() {
     const wrapper = document.querySelector('.bk-options')

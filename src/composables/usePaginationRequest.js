@@ -15,6 +15,8 @@ import { getDeepProperty } from '~/utils'
  * @param { boolean } immediate 是否立即请求选项数据，默认false
  * @param { string } keywordKey 搜索关键字在请求参数中的名称，默认为keyword
  * @param { object } extraParams 除了分页和搜索关键字以外的其他参数, 应当是一个Ref或ComputedRef, 或者返回一个对象的函数以兼容选项式API
+ * @param { array } defaultValue 适用于多选的编辑场景下的回显数据，多选时为对象数组
+ * @param { string } uniqueSymbol 适用于多选的编辑场景下，回显数据去重的字段，默认为id
  * @param { (msg: string) => void } warning 异常提示方法
  * @param { (...args) => void } requestCallback 请求成功且在options处理完成后的回调
  * @param { boolean } replace 旧数据的处理方式: true - 替换; false - 并入。默认false
@@ -29,16 +31,19 @@ function usePaginationRequest(
     immediate = false,
     keywordKey = 'keyword',
     extraParams = {},
+    defaultValue = [],
+    uniqueSymbol = 'id',
     warning = () => {},
     requestCallback,
     replace = false,
-    pagesize = 10,
+    pagesize = 20,
     dataKey = 'data.items',
     countKey = 'data.count',
     resultKey = 'result',
     messageKey = 'message',
 ) {
-    const data = ref([]) // 展示的数据
+    const data = ref(defaultValue) // 展示的数据
+    const preData = ref(defaultValue) // 适用于编辑时回显的数据
     const keyword = ref('') // 搜索关键字
     const count = ref(1) // 服务端数据总量
     const loading = ref(false)
@@ -49,18 +54,21 @@ function usePaginationRequest(
         pagesize: pagesize
     })
 
+    let inited = false
+
     watch(keyword, async (val) => {
         resetPage()
-        makeRequest(false)
+        makeRequest(!inited)
     }, { immediate })
 
     /**
      * 获取分页数据
+     * @param { boolean } merge 获取的数据是否与上次数据进行合并。true合并，false替换。默认true。
      * @returns { void }
      */
     async function makeRequest(merge = true) {
         try {
-            if (merge && data.value.length >= count.value) return
+            if (inited && merge && data.value.length >= count.value) return
             const params = {
                 ...pagination,
                 ...(typeof extraParams === 'function' ? extraParams() : extraParams)
@@ -71,29 +79,34 @@ function usePaginationRequest(
             const res = await request(params)
             
             // 获取数据失败提示
-            if (resultKey && !getDeepProperty(res, resultKey))  return warning(getDeepProperty(res, messageKey))
+            if (resultKey && !getDeepProperty(res, resultKey)) return warning(getDeepProperty(res, messageKey))
 
             // 获取数据成功
             // 处理数据
             const currentData = getDeepProperty(res, dataKey)
+                .filter(item => preData.value.every(preItem => preItem[uniqueSymbol] !== item[uniqueSymbol]))
+
             count.value = getDeepProperty(res, countKey)
             data.value = replace || !merge ? currentData : [...data.value, ...currentData]
 
             // 处理分页
             pagination.page++
             typeof requestCallback === 'function' && !merge && requestCallback()
+
+            // 初始化完成
+            inited = true
         } catch(e) {
             warning(e.message || e)
         } finally {
             loading.value = false
         }
     }
-    
+
     function resetPage() {
         pagination.page = 1
         count.value = 1
     }
-    
+
     function resetData() {
         data.value = []
     }

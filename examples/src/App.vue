@@ -13,6 +13,7 @@
                     searchable
                     clearable
                     enable-scroll-load
+                    :defaultValue="[{ id: 9, name: '测试9', en: 'test9' }]"
                     :remote-method="getOptions">
                     <auto-page-option
                         v-for="opt in options"
