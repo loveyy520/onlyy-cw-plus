@@ -76,7 +76,7 @@ const props = defineProps({
         type: Array,
         default: () => []
     },
-    uniqueFiled: {
+    uniqueField: {
         type: String,
         default: 'id'
     }
@@ -107,7 +107,7 @@ const {
     props.keywordKey,
     props.extraParams,
     props.defaultValue,
-    props.uniqueFiled,
+    props.uniqueField,
     props.warning,
     scrollToTop
 )
