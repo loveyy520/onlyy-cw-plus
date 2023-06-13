@@ -1,6 +1,6 @@
 <template>
     <div class="p-[20px]">
-        <h1>自分页下拉框</h1>
+        <h1>下拉框</h1>
         <bk-form>
             <bk-form-item label="下拉框">
                 <auto-page-select
@@ -11,6 +11,7 @@
                     display-tag
                     auto-height
                     searchable
+                    clearable
                     enable-scroll-load
                     :remote-method="getOptions">
                     <auto-page-option
@@ -31,12 +32,7 @@ import { getOptions } from '@/api'
 const selectRef = ref(null)
 
 const options = computed(() => selectRef.value?.options ??
-    [
-        {
-            id: 'a',
-            name: 'placeholder'
-        }
-    ])
+    [])
 </script>
 
 <style lang="scss" scoped>
