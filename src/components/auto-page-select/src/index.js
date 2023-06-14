@@ -1,6 +1,6 @@
-import select from './auto-page-select'
-import autoPageOption from './auto-page-option';
-import { withInstall } from '~/utils';
+import select from './auto-page-select.vue'
+import autoPageOption from './auto-page-option.js';
+import { withInstall } from '../../../utils/index.js';
 select.name = 'auto-page-select'
 autoPageOption.name = 'auto-page-option'
 

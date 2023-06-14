@@ -33,7 +33,7 @@
 
 <script setup>
 import { computed } from 'vue'
-import { usePaginationRequest } from '~/composables'
+import { usePaginationRequest } from '../../../composables/index.js'
 
 const props = defineProps({
     modelValue: {
@@ -127,7 +127,3 @@ defineExpose({
     reset
 })
 </script>
-
-<style lang="scss" scoped>
-
-</style>

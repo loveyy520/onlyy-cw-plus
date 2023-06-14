@@ -46,7 +46,3 @@ function handleChange(val, oldVal) {
     console.log('ids:', model.ids, 'val:', val);
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

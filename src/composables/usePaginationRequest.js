@@ -55,13 +55,11 @@ function usePaginationRequest(
     })
 
     let inited = false
-    let keywordChanged = false // 是否改变过关键字
 
     watch(keyword, async (val) => {
-        // if (!val) inited = false
         resetPage()
         await makeRequest(!inited)
-        if (val) keywordChanged = true
+        if (val) preData.value = []
     }, { immediate })
 
     /**
@@ -87,7 +85,7 @@ function usePaginationRequest(
             // 获取数据成功
             // 处理数据
             let currentData = getDeepProperty(res, dataKey)
-            if (!keyword.value && merge && !keywordChanged) {
+            if (!keyword.value && merge && preData.value.length) {
                 currentData = currentData
                     .filter(item => preData.value.every(preItem => preItem[uniqueField] !== item[uniqueField]))
             }
