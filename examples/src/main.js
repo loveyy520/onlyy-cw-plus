@@ -5,7 +5,7 @@ import App from './App'
 import bkMagicVue from '@canway/cw-magic-vue'
 import '@canway/cw-magic-vue/dist/bk-magic-vue.min.css'
 
-import { autoPageSelect, autoPageOption } from '/src'
+import { autoPageSelect, autoPageOption } from 'onlyy-cw-plus'
 autoPageOption.name = 'auto-page-option'
 
 Vue.use(autoPageSelect)

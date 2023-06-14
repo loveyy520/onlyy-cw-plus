@@ -1,6 +1,6 @@
 {
     "name": "onlyy-cw-plus1",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "onlyy-cw-plus 以嘉为前端组件为基础进行二次封装的个别组件包",
     "main": "src/index.js",
     "directories": {
@@ -15,6 +15,7 @@
     },
     "dependencies": {
         "@canway/cw-magic-vue": "^3.7.10-beta-01",
+        "onlyy-cw-plus": "^1.0.1",
         "rollup-plugin-babel": "^4.4.0",
         "vue": "^2.7.14",
         "vue-template-compiler": "^2.7.14"
