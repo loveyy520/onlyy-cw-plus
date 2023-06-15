@@ -91,7 +91,10 @@ function usePaginationRequest(
                 }
 
                 // 获取数据失败提示
-                if (resultKey && !getDeepProperty(res, resultKey)) return warning(getDeepProperty(res, messageKey))
+                if (resultKey && !getDeepProperty(res, resultKey)) {
+                    loading.value = false
+                    return warning(getDeepProperty(res, messageKey))
+                }
 
                 // 获取数据成功
                 // 处理数据
