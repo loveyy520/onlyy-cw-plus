@@ -1,6 +1,6 @@
 {
-    "name": "onlyy-cw-plus1",
-    "version": "1.0.1",
+    "name": "onlyy-cw-plus",
+    "version": "1.0.3",
     "description": "onlyy-cw-plus 以嘉为前端组件为基础进行二次封装的个别组件包",
     "main": "src/index.js",
     "directories": {

@@ -17,11 +17,16 @@
                     :defaultValue="model.objs"
                     :remote-method="getOptions"
                     @change="handleChange">
-                    <auto-page-option
-                        v-for="opt in options"
-                        :key="opt.id"
-                        :id="opt.id"
-                        :name="`${opt.name}【${opt.en}】`" />
+                        <auto-page-option
+                            v-for="opt in getValue(options)"
+                            :key="opt.id"
+                            :id="opt.id"
+                            :name="`${opt.name}【${opt.en}】`" />
+                            <template #extension>
+                                <span>
+                                    extension
+                                </span>
+                            </template>
                 </auto-page-select>
             </bk-form-item>
         </bk-form>
@@ -34,13 +39,17 @@ import { getOptions } from '@/api'
 
 const selectRef = ref(null)
 
-const options = computed(() => selectRef.value?.options ??
-    [])
-
 const model = reactive({
     ids: [25],
     objs: [{ id: 25, name: '测试25', en: 'test25' }]
 })
+const options = computed(() => selectRef.value?.options ??
+    [])
+
+function getValue(val){
+    console.log(val);
+    return val
+}
 
 function handleChange(val, oldVal) {
     console.log('ids:', model.ids, 'val:', val);

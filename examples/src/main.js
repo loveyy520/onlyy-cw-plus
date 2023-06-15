@@ -1,15 +1,15 @@
 import Vue from 'vue'
-import App from './App'
+import App from './App1'
 
 // 全量引入UI组件库
 import bkMagicVue from '@canway/cw-magic-vue'
 import '@canway/cw-magic-vue/dist/bk-magic-vue.min.css'
 
-import { autoPageSelect, autoPageOption } from 'onlyy-cw-plus'
-autoPageOption.name = 'auto-page-option'
+import { autoPageSelect, autoPageOption, autoSelectSet } from '/src'
 
 Vue.use(autoPageSelect)
 Vue.use(autoPageOption)
+Vue.use(autoSelectSet)
 
 Vue.use(bkMagicVue, {
     'bk-dialog': {
