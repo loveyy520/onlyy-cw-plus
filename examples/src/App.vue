@@ -1,3 +1,11 @@
+<!--
+ * @Author: loveyy520 201357337@qq.com
+ * @Date: 2023-06-13 23:16:22
+ * @LastEditors: loveyy520 201357337@qq.com
+ * @LastEditTime: 2023-06-13 23:16:49
+ * @FilePath: \onlyy-cw-plus\examples\src\App.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
     <div class="p-[20px]">
         <h1>下拉框</h1>
