@@ -11,13 +11,11 @@
         @change="(...args) => $emit('change', ...args)"
         @clear="(...args) => $emit('clear', ...args)"
         @tab-remove="(...args) => $emit('tab-remove', ...args)">
-        <template #default="{option, optionIndex, group, groupIndex}">
-            <slot
-                :option="option"
-                :optionIndex="optionIndex"
-                :group="group"
-                :groupIndex="groupIndex" />
-        </template>
+        <auto-page-option
+            v-for="opt in options"
+            :key="opt.id"
+            :id="opt.id"
+            :name="`${opt.name}【${opt.en}】`" />
         <template #extension>
             <slot name="extension" />
         </template>
@@ -82,7 +80,7 @@ const props = defineProps({
     }
 })
 
-const emit = defineEmits(['update:value', 'change'])
+const emit = defineEmits(['update:value', 'update:options', 'change'])
 const modelValue = computed({
     get() {
         return props.value

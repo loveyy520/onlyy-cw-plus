@@ -4,8 +4,10 @@ test/
 
 .eslintrc.js
 .gitignore
+.npmignore
 .npmrc
 
 index.html
+rollup.config.js
 vite.config.js
-pnpm-lock.yaml
+pnpm-lock.yam

@@ -55,57 +55,71 @@ function usePaginationRequest(
     })
 
     let inited = false
-    let keywordChanged = false // 是否改变过关键字
+
+    let cancelPrevious
 
     watch(keyword, async (val) => {
-        // if (!val) inited = false
         resetPage()
-        await makeRequest(!inited)
-        if (val) keywordChanged = true
+        cancelPrevious && cancelPrevious()
+        cancelPrevious = createRequest(!inited)
+        if (val) preData.value = []
     }, { immediate })
 
-    /**
-     * 获取分页数据
-     * @param { boolean } merge 获取的数据是否与上次数据进行合并。true合并，false替换。默认true。
-     * @returns { void }
-     */
-    async function makeRequest(merge = true) {
-        try {
-            if (inited && merge && data.value.length >= count.value) return
-            const params = {
-                ...pagination,
-                ...(typeof extraParams === 'function' ? extraParams() : extraParams)
+    function createRequest (merge = true) {
+        let canceled = false
+        makeRequest(merge)
+        /**
+         * 获取分页数据
+         * @param { boolean } merge 获取的数据是否与上次数据进行合并。true合并，false替换。默认true。
+         * @returns { void }
+         */
+        async function makeRequest (merge) {
+            try {
+                if (inited && merge && data.value.length >= count.value) return
+                const params = {
+                    ...pagination,
+                    ...(typeof extraParams === 'function' ? extraParams() : extraParams)
+                }
+                // 添加关键字参数
+                keywordKey && (params[keywordKey] = keyword.value)
+                loading.value = true
+                const res = await request(params)
+
+                if (canceled) {
+                    loading.value = false
+                    return (canceled = false)
+                }
+
+                // 获取数据失败提示
+                if (resultKey && !getDeepProperty(res, resultKey)) {
+                    loading.value = false
+                    return warning(getDeepProperty(res, messageKey))
+                }
+
+                // 获取数据成功
+                // 处理数据
+                let currentData = getDeepProperty(res, dataKey)
+                if (!keyword.value && merge && preData.value.length) {
+                    currentData = currentData
+                        .filter(item => preData.value.every(preItem => preItem[uniqueField] !== item[uniqueField]))
+                }
+
+                count.value = getDeepProperty(res, countKey)
+                data.value = replace || !merge ? currentData : [...data.value, ...currentData]
+
+                // 处理分页
+                pagination.page++
+                typeof requestCallback === 'function' && !merge && requestCallback()
+
+                // 初始化完成
+                inited = true
+            } catch (e) {
+                warning(e.message || e)
+            } finally {
+                loading.value = false
             }
-            // 添加关键字参数
-            keywordKey && (params[keywordKey] = keyword.value)
-            loading.value = true
-            const res = await request(params)
-            
-            // 获取数据失败提示
-            if (resultKey && !getDeepProperty(res, resultKey)) return warning(getDeepProperty(res, messageKey))
-
-            // 获取数据成功
-            // 处理数据
-            let currentData = getDeepProperty(res, dataKey)
-            if (!keyword.value && merge && !keywordChanged) {
-                currentData = currentData
-                    .filter(item => preData.value.every(preItem => preItem[uniqueField] !== item[uniqueField]))
-            }
-
-            count.value = getDeepProperty(res, countKey)
-            data.value = replace || !merge ? currentData : [...data.value, ...currentData]
-
-            // 处理分页
-            pagination.page++
-            typeof requestCallback === 'function' && !merge && requestCallback()
-
-            // 初始化完成
-            inited = true
-        } catch(e) {
-            warning(e.message || e)
-        } finally {
-            loading.value = false
         }
+        return () => (canceled = true)
     }
 
     function resetPage() {
@@ -137,7 +151,7 @@ function usePaginationRequest(
         keyword,
         pagination,
         loading,
-        makeRequest,
+        createRequest,
         setKeyword,
         resetPage,
         reset

@@ -1,6 +1,6 @@
 {
     "name": "onlyy-cw-plus",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "description": "onlyy-cw-plus 以嘉为前端组件为基础进行二次封装的个别组件包",
     "main": "src/index.js",
     "directories": {
@@ -10,11 +10,15 @@
     "scripts": {
         "dev": "vite --mode development",
         "start": "npm run dev",
+        "build": "npx rollup -c --bundleConfigAsCjs",
         "eslint": "npx eslint /**/*.vue --fix"
     },
     "dependencies": {
         "@canway/cw-magic-vue": "^3.7.10-beta-01",
-        "vue": "^2.7.14"
+        "onlyy-cw-plus": "^1.0.1",
+        "rollup-plugin-babel": "^4.4.0",
+        "vue": "^2.7.14",
+        "vue-template-compiler": "^2.7.14"
     },
     "devDependencies": {
         "@babel/cli": "^7.20.7",
@@ -23,6 +27,8 @@
         "@babel/helper-module-imports": "^7.12.13",
         "@babel/plugin-transform-runtime": "^7.19.6",
         "@babel/preset-env": "^7.20.2",
+        "@rollup/plugin-alias": "^5.0.0",
+        "@rollup/plugin-node-resolve": "^15.1.0",
         "@types/stylelint": "^13.13.3",
         "@vitejs/plugin-vue2": "^2.2.0",
         "babel-eslint": "^10.1.0",
@@ -37,6 +43,7 @@
         "eslint-plugin-standard": "^3.0.1",
         "eslint-plugin-vue": "^9.8.0",
         "path-browserify": "^1.0.1",
+        "rollup-plugin-vue": "^5.1.9",
         "sass": "^1.58.0",
         "terser": "^5.16.5",
         "vite": "^4.0.0",
